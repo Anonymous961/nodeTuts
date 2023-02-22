@@ -8,8 +8,9 @@ const Blog=require('./models/blogs');
 const dbURI='mongodb+srv://ark845612:wHUn9wE1nsUXeCfN@nodetuts.tz7mv4w.mongodb.net/nodetuts?retryWrites=true&w=majority';
 mongoose.set("strictQuery", false);
 mongoose.connect(dbURI,{useNewUrlParser:true,useUnifiedTopology:true})
-    .then((result)=>{console.log("connected to DB");
-        app.listeners(3000);
+    .then((result)=>{
+        app.listen(3000);
+        console.log("connected to DB");
     })
     .catch((err)=>console.log(err));
 //express app
@@ -53,22 +54,53 @@ app.get('/add-blog',(req,res)=>{
         })
 })
 
+app.get("/all-blogs",(req,res)=>{
+    Blog.find()
+    .then((result)=>{
+        res.send(result);
+    })
+    .catch((err)=>{
+        console.log(err);
+    })
+})
+
+app.get("/single-blog",(req,res)=>{
+    Blog.findById("63f60bad421e1ccfcea8655d")
+    .then((result)=>{
+        res.send(result);
+    })
+    .catch((err)=>{
+        console.log(err);
+    })
+})
 //routes
 app.get('/',(req,res)=>{
+    res.redirect('/blogs');
     // res.send('<p>Home Page</p>');
     // res.sendFile('./views/index.html',{root:__dirname});
-    const blogs=[
-        {title:"hello world",snippet:"lorem ipsum dolor sit amet, consectetur adip"},
-        {title:"hello mario",snippet:"lorem ipsum dolor sit amet, consectetur adip"},
-        {title:"hello anil",snippet:"lorem ipsum dolor sit amet, consectetur adip"}
-    ];
-    res.render('index',{title:'Home',blogs});
+    // const blogs=[
+    //     {title:"hello world",snippet:"lorem ipsum dolor sit amet, consectetur adip"},
+    //     {title:"hello mario",snippet:"lorem ipsum dolor sit amet, consectetur adip"},
+    //     {title:"hello anil",snippet:"lorem ipsum dolor sit amet, consectetur adip"}
+    // ];
+    // res.render('index',{title:'Home',blogs});
 });
 app.get('/about',(req,res)=>{
     // res.send('<p>About Page</p>');
     // res.sendFile('./views/about.html',{root:__dirname});
     res.render('about',{title:'About'});
 });
+
+app.get('/blogs',(req,res)=>{
+    Blog.find().sort({createdAt:-1})
+    .then((result)=>{
+        res.render('index',{title:'All blogs',blogs:result})
+    })
+    .catch((err)=>{
+        console.log(err);
+    })
+});
+
 app.get('/blogs/create',(req,res)=>{
     // res.send('<p>About Page</p>');
     // res.sendFile('./views/about.html',{root:__dirname});
