@@ -24,6 +24,7 @@ app.set('view engine','ejs');
 
 //middleware and static files
 app.use(express.static('public'));
+app.use(express.urlencoded({extended:true}));
 app.use(morgan('dev'));
 // app.use((req,res,next)=>{
 //     console.log('New request made:');
@@ -41,9 +42,9 @@ app.use((req,res,next)=>{
 //mongoose and mongo sandbox routes
 app.get('/add-blog',(req,res)=>{
     const blog=new Blog({
-        title:'new blog',
-        snippet:'about my new blog',
-        body:'more about my new blog'
+        title:'new blog 2',
+        snippet:'Hello,world!',
+        body:'this is just to check that the add blog is working properly'
     });
     blog.save()
         .then((result)=>{
@@ -100,6 +101,20 @@ app.get('/blogs',(req,res)=>{
         console.log(err);
     })
 });
+
+app.post('/blogs',(req,res)=>{
+    console.log(req.body);
+    // console.log(req.body.title);
+    const blog=new Blog(req.body)
+
+    blog.save()
+    .then((result)=>{
+        res.redirect('/blogs');
+    })
+    .catch((err)=>{
+        console.log(err);
+    })
+})
 
 app.get('/blogs/create',(req,res)=>{
     // res.send('<p>About Page</p>');
