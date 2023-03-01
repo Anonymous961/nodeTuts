@@ -1,8 +1,8 @@
 const express=require('express');
 const morgan=require('morgan');
 const mongoose=require('mongoose');
-const Blog=require('./models/blogs');
 
+const blogRoutes=require('./routes/blogRoutes');
 
 //connect to mongoDB
 const dbURI='mongodb+srv://ark845612:wHUn9wE1nsUXeCfN@nodetuts.tz7mv4w.mongodb.net/nodetuts?retryWrites=true&w=majority';
@@ -92,57 +92,8 @@ app.get('/about',(req,res)=>{
     res.render('about',{title:'About'});
 });
 
-app.get('/blogs',(req,res)=>{
-    Blog.find().sort({createdAt:-1})
-    .then((result)=>{
-        res.render('index',{title:'All blogs',blogs:result})
-    })
-    .catch((err)=>{
-        console.log(err);
-    })
-});
-
-app.post('/blogs',(req,res)=>{
-    console.log(req.body);
-    // console.log(req.body.title);
-    const blog=new Blog(req.body)
-
-    blog.save()
-    .then((result)=>{
-        res.redirect('/blogs');
-    })
-    .catch((err)=>{
-        console.log(err);
-    })
-})
-
-app.get("/blogs/:id",(req,res)=>{
-    const id=req.params.id;
-    Blog.findById(id)
-    .then((result)=>{
-        res.render('details',{title:'Blog Details',blog:result})
-    })
-    .catch((err)=>{
-        console.log(err);
-    });
-});
-
-app.delete('/blogs/:id',(req,res)=>{
-    const id=req.params.id;
-
-    Blog.findByIdAndDelete(id)
-    .then(result=>{
-        res.json({redirect:'/blogs'});
-    })
-    .catch(err=>{
-        console.log(err);
-    })
-})
-app.get('/blogs/create',(req,res)=>{
-    // res.send('<p>About Page</p>');
-    // res.sendFile('./views/about.html',{root:__dirname});
-    res.render('create',{title:"Create"});
-});
+//blog routes
+app.use(blogRoutes);
 app.get('/about-us',(req,res)=>{
     res.redirect('/about');
 })
