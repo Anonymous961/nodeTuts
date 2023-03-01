@@ -116,6 +116,16 @@ app.post('/blogs',(req,res)=>{
     })
 })
 
+app.get("/blogs/:id",(req,res)=>{
+    const id=req.params.id;
+    Blog.findById(id)
+    .then((result)=>{
+        res.render('details',{title:'Blog Details',blog:result})
+    })
+    .catch((err)=>{
+        console.log(err);
+    });
+})
 app.get('/blogs/create',(req,res)=>{
     // res.send('<p>About Page</p>');
     // res.sendFile('./views/about.html',{root:__dirname});
