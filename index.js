@@ -65,6 +65,7 @@ app.get("/all-blogs",(req,res)=>{
     })
 })
 
+
 app.get("/single-blog",(req,res)=>{
     Blog.findById("63f60bad421e1ccfcea8655d")
     .then((result)=>{
