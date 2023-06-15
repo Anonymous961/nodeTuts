@@ -1,5 +1,4 @@
-const fs=require('fs');
-
+const fs = require("fs");
 
 //reading file
 // fs.readFile('./docs/blog1.txt',(err,data)=>{
@@ -11,11 +10,10 @@ const fs=require('fs');
 
 // console.log('last line');
 
-
-//writing file
-// fs.writeFile('./docs/blog2.txt','hello friends',()=>{
-//     console.log("file was written");
-// })
+// writing file
+fs.writeFile("./docs/blog2.txt", "hello friends", () => {
+  console.log("file was written");
+});
 
 //directories
 // if(!fs.existsSync('./assets')){
@@ -34,13 +32,12 @@ const fs=require('fs');
 //     })
 // }
 
-
 //deleting files
-if(fs.existsSync('./docs/deleteme.txt')){
-    fs.unlink('./docs/deleteme.txt',(err)=>{
-        if(err){
-            console.log(err);
-        }
-        console.log("file deleted");
-    })
+if (fs.existsSync("./docs/deleteme.txt")) {
+  fs.unlink("./docs/deleteme.txt", (err) => {
+    if (err) {
+      console.log(err);
+    }
+    console.log("file deleted");
+  });
 }
